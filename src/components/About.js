@@ -1,6 +1,7 @@
 import User from "./User";
 import UserClass from "./userClass";
 import React from "react";
+import UserContext from "../utils/UserContext";
 
 import { Component } from "react";
 
@@ -34,6 +35,12 @@ class About extends React.Component {
         return (
             <div>
                 <h1>About</h1>
+                <div>
+                    Logged In userClass
+                    <UserContext.Consumer>
+                        {({loggedInUser})=><h1 className="text-bold">{loggedInUser}</h1>}
+                    </UserContext.Consumer>
+                </div>
                 <User name={"Sandy"}/>
               <UserClass name={"First from class"} location={"Hyderabad"}/>
               {/* <UserClass name={"Second from class"} location={"Hyderabad"}/> to understand the lifecycle they are two phases the render andd commit phase first is the component calls the constructor and renders,so all child components are rendered in this phase next is commit phase in this the dom is updates so it takes time for react to update the dome,then only componentDidMount is called at last

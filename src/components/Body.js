@@ -3,106 +3,9 @@ import Card,{withPromotedLabel} from "./Card";
 // import Shimmer from "./shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
-// const Body = () => {
-//   // const [listofRestaurants, setListofRestaurants]=useState(resObj);
-//   // the usetate must be empty
-//   const [listofRestaurants, setListofRestaurants] = useState([]);
-//   const [filteredRestaurants,setFilteredRestaurants]=useState([]);
-//   const [searchText, setSearchText] = useState("");
-
-//   useEffect(() => {
-//     console.log("use effect");
-//     fetchData();
-//   },[]);
-
-//   const fetchData = async () => {
-//     const data = await fetch(
-//       "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5509643&lng=73.9168593&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-//     );
-//     const json = await data.json();
-//     setListofRestaurants(
-//       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-//     );
-//     setFilteredRestaurants(
-//       json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
-//     );
-//   };
-
-//   console.log(listofRestaurants);
-//   console.log(filteredRestaurants)
-
-
-
-//   // if(listofRestaurants?.length ===0){
-//   //   return <Shimmer/>;
-//   // }
-//   return listofRestaurants?.restaurants?.length === 0 ? (
-//     <Shimmer />
-//   ) : (
-//     <div className="body">
-//       <div className="filter">
-//         <div className="search">
-  
-//           <input
-//             type="text"
-//             className="search-box"
-//             value={searchText}
-//             onChange={(e) => setSearchText(e.target.value)}
-//           />
-//           <button
-//             onClick={() => {
-//               console.log(listofRestaurants);
-//               const filteredRestaturant = listofRestaurants?.restaurants.filter((res) => {
-//                 console.log(res);
-//                 console.log(res.info.name);
-//                 return res.info.name.includes(searchText)
-//               }  
-//               );
-//               console.log(filteredRestaturant);
-//               // setListofRestaurants(filteredRestaturant);check this once
-//               setFilteredRestaurants(filteredRestaturant);
-
-//             }}
-//           >
-//             search
-//           </button>
-//         </div>
-//         <button
-//           className="filter=btn"
-//           onClick={() => {
-//             console.log("clicked");
-//             const filteredList = listofRestaurants?.restaurants?.filter(
-              
-//               (res) => res?.info?.avgRating > 4.0,
-              
-//             );
-//             setListofRestaurants(filteredList);
-//             console.log(filteredList)
-//           }}
-//         >
-//           Top Rated Cuisines
-//         </button>
-//       </div>
-//       <div className="card-container">
-//         {/* <Card resName="KFC" cusineName="Wester"/>              
-// {/* for dynMIC Data below */}
-//         {/* <Card resData={resObj} /> */}
-//         {/* {filteredRestaurants?.restaurants?.map((restaurant) => (
-//           <Link key={restaurant?.info?.id} to={"/restaurants/" + restaurant.data.id}>
-//           <Card resData={restaurant} /></Link>
-//         ))} */}
-//         {filteredRestaurants?.restaurants?.map((restaurant) => (
-//           <Card key={restaurant.info.id} resData={restaurant} />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Body;
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Shimmer from "./Shimmer";
+import UserContext from "../utils/UserContext";
 //ep05 it is not good to keep the hardcoded data into our component file. so we should keep in another file like utils.js,consts.js,config.js
 //we  are writing this listOfRestaurants hardcode data in this file itself, just to implement the filter and hooks.
 /*now react hook is a noraml javascript function given by react to us,it is prebuilt the only thing is the function comes with super powers,it has some logic return behinfd the scenes,it is utility function given to us .We did npm react in the beginning through whichwe all the utility functions .How to use these hooks? we need to impoort them .There are 2 important hooks in react they are
@@ -214,8 +117,12 @@ const Body = () => {
   };
 
   const onlineStatus=useOnlineStatus();
-  if(onlineStatus===false) return <h1>Looks like you are offline,Please check your network connection</h1>
+  if(onlineStatus===false) 
+  return (
+  <h1>Looks like you are offline,Please check your network connection</h1>
+  );
 
+  const {loggedInUser,setUserName}=useContext(UserContext);
 
   // const filterRes = () => {
   //   console.log('set filter is called')
@@ -272,6 +179,11 @@ const Body = () => {
         >
           Top Rated Restaurants
         </button>
+        </div>
+        <div className="search m-4 p-4 items-center">
+          <label>UserName:</label>
+          <input className="border border-black" value={loggedInUser} onChange={(e)=>setUserName(e.target.value)}></input>
+
         </div>
       </div>
       <div className="flex flex-wrap">

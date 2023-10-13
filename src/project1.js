@@ -1,23 +1,40 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
-import { createBrowserRouter , Outlet, RouterProvider} from "react-router-dom";
+import { createBrowserRouter , Outlet, RouterProvider, useLocation} from "react-router-dom";
 import About from "./components/About";
 import RestroMenu from "./components/RestroMenu";
 import Grocery from "./components/Grocery";
+import { Provider } from "react-redux";
+import UserContext from "./utils/UserContext";
+
 
 const Grocery=lazy(()=>import("./components/Grocery"));   //its a callbcak function that will take the path of grocery component and load it when user actually moves to that page
 const About=lazy(()=>import("./components/About")); 
+
 const AppLayout = () => {
-  return (
+const [userName,setUserName]=useState();
+
+useEffect(()=>{
+  const data={
+    name:"Sandy"
+  };
+  setUserName(data.name);
+})
+    return (
+    <UserContext.Provider value={{loggedInUser:userName}}>
     <div className="app">
-      <Header />
+      <UserContext.Provider value={{loggedInUser:"Rani"}}>
+        {/* for this block i.e The header will be having rani as username ,and all the other components out of this will be having the username Sandy */}
+      <Header />             
+      </UserContext.Provider>
       {/* <Body />instaed of bdy i will write outlet */}
       <Outlet/>
     </div>
+    </UserContext.Provider>
   );
 };
 
